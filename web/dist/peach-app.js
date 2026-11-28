@@ -2,7 +2,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "10d324b0-5c58-4c9a-9785-3e59af95d57f", e._sentryDebugIdIdentifier = "sentry-dbid-10d324b0-5c58-4c9a-9785-3e59af95d57f");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "d6bbab9d-3c37-4027-9ddb-46ffdaae5240", e._sentryDebugIdIdentifier = "sentry-dbid-d6bbab9d-3c37-4027-9ddb-46ffdaae5240");
 	} catch {}
 })();
 var e = Object.create, t = Object.defineProperty, n = Object.getOwnPropertyDescriptor, r = Object.getOwnPropertyNames, i = Object.getPrototypeOf, a = Object.prototype.hasOwnProperty, o = (e, t) => () => (t || (e((t = { exports: {} }).exports, t, t.exports), e = null), t.exports), s = (e, n) => {
@@ -7373,7 +7373,8 @@ var Ge = "peach.settings.v1", Ke = {
 		doubleTapPercentHelp: "Share of the screen on each side. Double-tap left to go back or right to skip ahead.",
 		holdRate: "Hold speed",
 		holdRateHelp: "Used when you hold the video or the right arrow key.",
-		swipeMinutes: "A full-width drag skips",
+		swipeSeconds: "Horizontal swipe step",
+		swipeSecondsHelp: "Defaults to 15 seconds per step. Longer swipes skip more steps; the video length limits the range.",
 		touch: "Picture gestures (hold, drag, double-tap)"
 	},
 	playbackTranscode: {
@@ -15747,7 +15748,8 @@ var Ge = "peach.settings.v1", Ke = {
 		doubleTapPercentHelp: "左右两侧各占画面的比例。双击左侧后退，右侧前进。",
 		holdRate: "长按倍速",
 		holdRateHelp: "长按画面或右方向键时使用。",
-		swipeMinutes: "横向拖过整个画面跳转",
+		swipeSeconds: "横滑跳转步长",
+		swipeSecondsHelp: "默认每档 15 秒；滑得越远，跳过的档数越多，视频时长决定最多能跳多远。",
 		touch: "画面手势（长按、拖动、双击）"
 	},
 	playbackTranscode: {
@@ -58268,7 +58270,7 @@ function U6e(e, t) {
 var D8 = {
 	touchGestures: !0,
 	holdRate: 2,
-	swipeMinutes: 20,
+	swipeSeconds: 15,
 	doubleTapPercent: 35,
 	seekSeconds: 10,
 	autoFullscreen: !1
@@ -58277,7 +58279,7 @@ function k8(e = {}) {
 	return {
 		touchGestures: e.touchGestures !== !1,
 		holdRate: O8(e.holdRate, 1.25, 4, D8.holdRate),
-		swipeMinutes: O8(e.swipeMinutes, 1, 120, D8.swipeMinutes),
+		swipeSeconds: O8(e.swipeSeconds, 1, 60, D8.swipeSeconds),
 		doubleTapPercent: O8(e.doubleTapPercent, 15, 45, D8.doubleTapPercent),
 		seekSeconds: O8(e.seekSeconds, 1, 300, D8.seekSeconds),
 		autoFullscreen: e.autoFullscreen === !0
@@ -58512,7 +58514,9 @@ function ebe(e) {
 		...t
 	};
 	n.followInitialDays = Q6e.includes(+n.followInitialDays) ? +n.followInitialDays : 30, delete n.rotateMinutes;
-	let r = !1, i = +n.sortDefaultsVersion || 0;
+	let r = !1;
+	"swipeMinutes" in n && (delete n.swipeMinutes, r = !0);
+	let i = +n.sortDefaultsVersion || 0;
 	i < 2 && n.defaultSort === "new" && (n.defaultSort = "seed", r = !0);
 	let a = C6e[n.defaultSort];
 	i < 3 && a && (n.defaultSort = a[0], r = !0), n.sortDefaultsVersion = 3, n.batchSize = a8(+n.batchSize, 1, 200, 60), n.defaultSort = U8(n.defaultSort, S6e, "seed"), n.defaultSortDirection = U8(n.defaultSortDirection, [
@@ -58521,7 +58525,7 @@ function ebe(e) {
 		"desc"
 	], ""), n.hoverDelaySeconds = a8(+n.hoverDelaySeconds, 0, 60, 5), n.hoverPreview = n.hoverPreview !== !1;
 	let o = k8(n);
-	n.touchGestures = o.touchGestures, n.holdRate = o.holdRate, n.swipeMinutes = o.swipeMinutes, n.doubleTapPercent = o.doubleTapPercent, n.autoFullscreen = o.autoFullscreen, n.seekSeconds = a8(+n.seekSeconds, 1, 300, 10), delete n.loginDays, delete n.metadataRefreshDays, n.ambientMode = n.ambientMode !== !1, n.theaterMode = n.theaterMode === !0, n.groupCollapse = n.groupCollapse !== !1, n.detailAutoplay = n.detailAutoplay !== !1, n.autoChineseSubtitles = n.autoChineseSubtitles === !0, n.afterPlayback = U8(n.afterPlayback, j8, "next"), n.resumeRestartPercent = a8(+n.resumeRestartPercent, 0, 20, 5), n.miniplayer = n.miniplayer !== !1, n.uiSounds = n.uiSounds !== !1, n.feedAutoScroll = n.feedAutoScroll !== !1, n.feedNewRows = n.feedNewRows !== !1, n.homeShortsLimit = n.homeShortsLimit === 0 ? 0 : a8(+n.homeShortsLimit, 6, 60, 18), n.homeTiers = n.homeTiers !== !1, n.homePreviewOnly = n.homePreviewOnly === !0, n.containHomeScroll = n.containHomeScroll === !0, n.completionPrompt = n.completionPrompt !== !1, n.searchRecommendations = n.searchRecommendations !== !1, n.ingestNotices = n.ingestNotices !== !1, n.ingestToasts = t.ingestToasts ?? n.ingestNotices, n.ingestToasts = n.ingestToasts !== !1, n.browserNotices = t.browserNotices === !0;
+	n.touchGestures = o.touchGestures, n.holdRate = o.holdRate, n.swipeSeconds = o.swipeSeconds, n.doubleTapPercent = o.doubleTapPercent, n.autoFullscreen = o.autoFullscreen, n.seekSeconds = a8(+n.seekSeconds, 1, 300, 10), delete n.loginDays, delete n.metadataRefreshDays, n.ambientMode = n.ambientMode !== !1, n.theaterMode = n.theaterMode === !0, n.groupCollapse = n.groupCollapse !== !1, n.detailAutoplay = n.detailAutoplay !== !1, n.autoChineseSubtitles = n.autoChineseSubtitles === !0, n.afterPlayback = U8(n.afterPlayback, j8, "next"), n.resumeRestartPercent = a8(+n.resumeRestartPercent, 0, 20, 5), n.miniplayer = n.miniplayer !== !1, n.uiSounds = n.uiSounds !== !1, n.feedAutoScroll = n.feedAutoScroll !== !1, n.feedNewRows = n.feedNewRows !== !1, n.homeShortsLimit = n.homeShortsLimit === 0 ? 0 : a8(+n.homeShortsLimit, 6, 60, 18), n.homeTiers = n.homeTiers !== !1, n.homePreviewOnly = n.homePreviewOnly === !0, n.containHomeScroll = n.containHomeScroll === !0, n.completionPrompt = n.completionPrompt !== !1, n.searchRecommendations = n.searchRecommendations !== !1, n.ingestNotices = n.ingestNotices !== !1, n.ingestToasts = t.ingestToasts ?? n.ingestNotices, n.ingestToasts = n.ingestToasts !== !1, n.browserNotices = t.browserNotices === !0;
 	let s = t.notificationLimits, c = { ...V8 };
 	for (let e of Object.keys(V8)) c[e] = a8(s?.[e] ?? NaN, 0, 10, V8[e]);
 	return n.notificationLimits = c, n.showFeedbackButton = n.showFeedbackButton !== !1, n.topToolbar = B8(n.topToolbar), n.feedHideGroupCompilations = n.feedHideGroupCompilations !== !1, n.feedHideSoloCompilations = n.feedHideSoloCompilations === !0, n.feedHideExcerpts = n.feedHideExcerpts !== !1, n.searchHistoryLimit = a8(+n.searchHistoryLimit, 0, 50, 10), n.relatedLimit = a8(+n.relatedLimit, 0, 60, 20), n.feedLimit = a8(+n.feedLimit, 1, 100, 12), Object.assign(n, Gc(n)), n.theme = U8(n.theme, Z6e, "system"), n.localAppearance = n.localAppearance === !0, n.catalogView = n.catalogView === "list" ? "list" : "cards", n.followLayout = n.followLayout === "table" ? "table" : "default", n.photoLayout = n.photoLayout === "fixed" ? "fixed" : "masonry", n.followPageSize = a8(+n.followPageSize, 1, 200, 20), n.recentTags = Array.isArray(n.recentTags) ? n.recentTags.filter((e) => typeof e == "string" && e.trim() && e.length <= 512).slice(0, 12) : [], n.queueSort = Object.fromEntries(Object.entries({
@@ -70850,25 +70854,26 @@ function kwe(e, t, n, r) {
 		a || performance.now() - i > Owe || A8().autoFullscreen && _T() && !n() && (!t.videoWidth || t.videoWidth <= t.videoHeight || (a = !0, e.querySelector("media-fullscreen-button")?.click()));
 	}, { signal: r });
 }
+// src/player/touch-controls.ts
 function Awe(e, t, n, r = () => t.duration, i = !0) {
 	let a = document.createElement("div");
 	a.className = "vjs-peach-gesture", a.hidden = !0, a.setAttribute("role", "status"), a.setAttribute("aria-live", "polite"), e.querySelector("media-container")?.append(a);
-	let o, s, c, l, u, d = null, f = 0, p = /* @__PURE__ */ new Set(), m = null, h = (e) => {
+	let o, s, c, l, u = null, d = 0, f = /* @__PURE__ */ new Set(), p = null, m = (e) => {
 		let t = Math.max(0, Math.round(e));
 		return `${Math.floor(t / 3600) ? `${Math.floor(t / 3600)}:` : ""}${String(Math.floor(t / 60) % 60).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
-	}, g = () => !!e.querySelector("[aria-expanded=\"true\"]"), _ = () => {
+	}, h = () => !!e.querySelector("[aria-expanded=\"true\"]"), g = () => {
 		e.classList.add("vjs-user-active"), e.classList.remove("vjs-user-inactive");
-	}, v = () => {
+	}, _ = () => {
 		e.classList.remove("vjs-user-active"), e.classList.add("vjs-user-inactive");
-	}, y = () => {
-		_(), clearTimeout(o), !t.paused && !t.ended && (o = setTimeout(() => {
-			m || p.size || g() ? y() : v();
+	}, v = () => {
+		g(), clearTimeout(o), !t.paused && !t.ended && (o = setTimeout(() => {
+			p || f.size || h() ? v() : _();
 		}, e.dataset.playerInput === "touch" ? 3e3 : 2500));
-	}, b = (e, t = !1) => {
+	}, y = (e, t = !1) => {
 		clearTimeout(l), a.textContent = e, a.hidden = !1, t || (l = setTimeout(() => {
 			a.hidden = !0;
 		}, 1e3));
-	}, x = (t) => !t.composedPath().some((t) => t instanceof Element && t !== e && t.matches(".vjs-control-bar,.vjs-peach-settings,.vjs-peach-panel,[role=\"menu\"],button,a,input,select,textarea,[role=\"slider\"],[role=\"button\"],media-slider-thumb")), S = (e) => {
+	}, b = (t) => !t.composedPath().some((t) => t instanceof Element && t !== e && t.matches(".vjs-control-bar,.vjs-peach-settings,.vjs-peach-panel,[role=\"menu\"],button,a,input,select,textarea,[role=\"slider\"],[role=\"button\"],media-slider-thumb")), x = (e) => {
 		let n = r();
 		if (!Number.isFinite(n) || n <= 0) return null;
 		let i = Math.min(Math.max(0, e), Math.max(0, n - .1)), a = t.seekable;
@@ -70879,47 +70884,62 @@ function Awe(e, t, n, r = () => t.duration, i = !0) {
 			Math.abs(t - i) < s && (o = t, s = Math.abs(t - i));
 		}
 		return o;
-	}, C = (e) => {
-		let n = S(e);
-		if (n === null) b(z("catalog:playerGestures.durationUnknown"));
+	}, S = (e) => {
+		let n = x(e);
+		if (n === null) y(z("catalog:playerGestures.durationUnknown"));
 		else {
 			try {
 				t.currentTime = n;
 			} catch {
-				b(z("catalog:playerGestures.seekFailed"));
+				y(z("catalog:playerGestures.seekFailed"));
 				return;
 			}
-			b(z("catalog:playerGestures.seekTo", { time: h(n) }));
+			y(z("catalog:playerGestures.seekTo", { time: m(n) }));
 		}
-	}, w = (e) => {
-		e.to = S(e.from - (performance.now() - e.started) / 1e3 * 2) ?? void 0, e.to !== void 0 && b(z("catalog:playerGestures.backward", {
-			delta: h(e.from - e.to),
-			to: h(e.to),
-			total: h(r())
+	}, C = (e, t) => {
+		if (Math.abs(t) < 12) {
+			e.to = void 0, a.hidden = !0;
+			return;
+		}
+		let n = r();
+		if (!Number.isFinite(n) || n <= 0) {
+			e.to = void 0, y(z("catalog:playerGestures.durationUnknown"), !0);
+			return;
+		}
+		let i = A8().swipeSeconds, o = Math.min(n, Math.max(150, n * .04)), s = Math.min(Math.abs(t) / e.width, 1), c = Math.max(1, Math.ceil(o * s / i));
+		if (e.to = x(e.from + Math.sign(t) * c * i) ?? void 0, e.to === void 0) {
+			y(z("catalog:playerGestures.durationUnknown"), !0);
+			return;
+		}
+		let l = e.to - e.from;
+		y(z(l >= 0 ? "catalog:playerGestures.forward" : "catalog:playerGestures.backward", {
+			delta: m(Math.abs(l)),
+			to: m(e.to),
+			total: m(n)
 		}), !0);
-	}, T = (e = !0) => {
-		clearTimeout(s), clearTimeout(c), clearInterval(u), d = null, m?.rate !== void 0 && (t.playbackRate = m.rate), e && m?.resume && t.play().catch(() => {}), m?.axis === "volume" && (t.volume = m.volume, t.muted = m.muted), m = null, p.clear(), a.hidden = !0, clearTimeout(l), y();
+	}, w = () => {
+		clearTimeout(s), clearTimeout(c), u = null, p?.rate !== void 0 && (t.playbackRate = p.rate), p?.axis === "volume" && (t.volume = p.volume, t.muted = p.muted), p = null, f.clear(), a.hidden = !0, clearTimeout(l), v();
 	};
 	e.addEventListener("pointerdown", (n) => {
 		if (!i) return;
 		if (n.pointerType === "touch" && !A8().touchGestures) {
-			e.dataset.playerInput = "touch", y();
+			e.dataset.playerInput = "touch", v();
 			return;
 		}
 		let r = e.classList.contains("vjs-user-active");
 		if (n.pointerType !== "touch") {
-			if (T(), e.dataset.playerInput = "mouse", f = 0, y(), n.pointerType !== "mouse" || n.button !== 0 || !A8().touchGestures || !x(n) || g()) return;
-			p.add(n.pointerId);
+			if (w(), e.dataset.playerInput = "mouse", d = 0, v(), n.pointerType !== "mouse" || n.button !== 0 || !A8().touchGestures || !b(n) || h()) return;
+			f.add(n.pointerId);
 		} else {
-			if (e.dataset.playerInput = "touch", p.add(n.pointerId), y(), p.size !== 1) {
-				T(), p.add(n.pointerId);
+			if (e.dataset.playerInput = "touch", f.add(n.pointerId), v(), f.size !== 1) {
+				w(), f.add(n.pointerId);
 				return;
 			}
-			if (!x(n)) return;
-			f = Date.now() + 1e3;
+			if (!b(n)) return;
+			d = Date.now() + 1e3;
 		}
 		let a = n.pointerType === "mouse", o = e.getBoundingClientRect();
-		if (m = {
+		if (p = {
 			id: n.pointerId,
 			x: n.clientX,
 			y: n.clientY,
@@ -70929,131 +70949,113 @@ function Awe(e, t, n, r = () => t.duration, i = !0) {
 			volume: t.volume,
 			muted: t.muted,
 			axis: "",
-			menu: g(),
+			menu: h(),
 			visible: r,
 			mouse: a
 		}, !a) try {
 			e.setPointerCapture?.(n.pointerId);
 		} catch {}
-		m.menu || (s = setTimeout(() => {
-			if (!m || m.axis) return;
-			let e = m;
-			if ((e.x - o.left) / e.width < A8().doubleTapPercent / 100) {
-				if (S(e.from) === null) return;
-				clearTimeout(c), d = null, e.axis = "rewind", e.from = t.currentTime, e.started = performance.now(), e.resume = !t.paused && !t.ended, e.resume && t.pause(), w(e), u = setInterval(() => {
-					m === e && w(e);
-				}, 200);
-			} else t.paused || t.ended || (clearTimeout(c), d = null, m.axis = "hold", m.rate = t.playbackRate, t.playbackRate = Math.max(A8().holdRate, m.rate), b(z("catalog:playerGestures.holdTouch", { rate: t.playbackRate }), !0));
+		p.menu || (s = setTimeout(() => {
+			p && !p.axis && (t.paused || t.ended || (clearTimeout(c), u = null, p.axis = "hold", p.rate = t.playbackRate, t.playbackRate = Math.max(A8().holdRate, p.rate), y(z("catalog:playerGestures.holdTouch", { rate: t.playbackRate }), !0)));
 		}, 500));
 	}, {
 		signal: n,
 		capture: !0
 	}), e.addEventListener("pointermove", (n) => {
-		if (!i || n.pointerType !== "touch" && !m?.mouse) {
-			y();
+		if (!i || n.pointerType !== "touch" && !p?.mouse) {
+			v();
 			return;
 		}
-		n.pointerType !== "touch" && y();
-		let a = m;
-		if (!a || a.id !== n.pointerId || a.menu || a.axis === "hold" || a.axis === "rewind") return;
-		let o = n.clientX - a.x, l = n.clientY - a.y;
-		if (!a.axis) {
-			if (Math.max(Math.abs(o), Math.abs(l)) < 12) return;
-			clearTimeout(s), clearTimeout(c), d = null;
+		n.pointerType !== "touch" && v();
+		let r = p;
+		if (!r || r.id !== n.pointerId || r.menu || r.axis === "hold") return;
+		let a = n.clientX - r.x, o = n.clientY - r.y;
+		if (!r.axis) {
+			if (Math.max(Math.abs(a), Math.abs(o)) < 12) return;
+			clearTimeout(s), clearTimeout(c), u = null;
 			let t = !!document.fullscreenElement && e.contains(document.fullscreenElement) || e.matches(".vjs-fullscreen,.vjs-full-window,[data-peach-fullscreen]") || document.body.classList.contains("vjs-full-window");
-			if (a.axis = Math.abs(o) > Math.abs(l) * 1.2 ? "seek" : !a.mouse && t && a.x - e.getBoundingClientRect().left > a.width / 2 ? "volume" : "scroll", a.mouse && a.axis === "seek") try {
+			if (r.axis = Math.abs(a) > Math.abs(o) * 1.2 ? "seek" : !r.mouse && t && r.x - e.getBoundingClientRect().left > r.width / 2 ? "volume" : "scroll", r.mouse && r.axis === "seek") try {
 				e.setPointerCapture?.(n.pointerId);
 			} catch {}
 		}
-		if (a.axis === "seek") {
-			if (n.preventDefault(), a.to = S(a.from + o / a.width * A8().swipeMinutes * 60) ?? void 0, a.to === void 0) {
-				b(z("catalog:playerGestures.durationUnknown"), !0);
-				return;
-			}
-			let e = a.to - a.from;
-			b(z(e >= 0 ? "catalog:playerGestures.forward" : "catalog:playerGestures.backward", {
-				delta: h(Math.abs(e)),
-				to: h(a.to),
-				total: h(r())
-			}), !0);
-		} else if (a.axis === "volume") {
+		if (r.axis === "seek") n.preventDefault(), C(r, a);
+		else if (r.axis === "volume") {
 			n.preventDefault();
-			let e = Math.max(0, Math.min(1, a.volume - l / a.height));
+			let e = Math.max(0, Math.min(1, r.volume - o / r.height));
 			try {
 				t.volume = e, t.muted = e === 0;
 			} catch {}
-			a.volumeSupported = Math.abs(t.volume - e) < .01, b(a.volumeSupported ? z("catalog:playerGestures.volume", { percent: Math.round(t.volume * 100) }) : z("catalog:playerGestures.deviceVolume"), !0);
+			r.volumeSupported = Math.abs(t.volume - e) < .01, y(r.volumeSupported ? z("catalog:playerGestures.volume", { percent: Math.round(t.volume * 100) }) : z("catalog:playerGestures.deviceVolume"), !0);
 		}
 	}, {
 		signal: n,
 		passive: !1
 	}), window.addEventListener("pointerup", (n) => {
-		if (!p.has(n.pointerId)) return;
-		p.delete(n.pointerId);
-		let r = m;
+		if (!f.has(n.pointerId)) return;
+		f.delete(n.pointerId);
+		let r = p;
 		if (n.pointerType === "touch" || r?.mouse) {
-			if (!r || r.id !== n.pointerId) y();
+			if (!r || r.id !== n.pointerId) v();
 			else {
-				clearTimeout(s), clearInterval(u), m = null, (!r.mouse || r.axis) && (f = Date.now() + 1e3);
+				r.axis === "seek" ? C(r, n.clientX - r.x) : !r.axis && Math.abs(n.clientX - r.x) >= 12 && Math.abs(n.clientX - r.x) > Math.abs(n.clientY - r.y) * 1.2 && (r.axis = "seek", C(r, n.clientX - r.x)), clearTimeout(s), p = null, (!r.mouse || r.axis) && (d = Date.now() + 1e3);
 				try {
 					e.releasePointerCapture?.(n.pointerId);
 				} catch {}
-				if (r.rate !== void 0 && (t.playbackRate = r.rate), r.axis === "seek" && r.to !== void 0) C(r.to);
-				else if (r.axis === "rewind") w(r), r.to !== void 0 && C(r.to), r.resume && t.play().catch(() => {});
+				if (r.rate !== void 0 && (t.playbackRate = r.rate), r.axis === "seek" && r.to !== void 0) S(r.to);
 				else if (r.axis === "hold" || r.axis === "volume") l = setTimeout(() => {
 					a.hidden = !0;
 				}, 700);
-				else if (r.mouse) y();
+				else if (r.mouse) v();
 				else if (!r.axis && Math.hypot(n.clientX - r.x, n.clientY - r.y) < 12) {
 					if (r.menu) {
-						y();
+						v();
 						return;
 					}
 					let n = (r.x - e.getBoundingClientRect().left) / r.width, { doubleTapPercent: i, seekSeconds: a } = A8(), s = i / 100, l = n < s ? -1 : +(n > 1 - s);
-					d && Date.now() - d.at < 300 && d.zone === l ? (clearTimeout(c), d = null, l ? C(t.currentTime + l * a) : t.paused || t.ended ? t.play().catch(() => {}) : t.pause()) : (clearTimeout(c), d = {
+					u && Date.now() - u.at < 300 && u.zone === l ? (clearTimeout(c), u = null, l ? S(t.currentTime + l * a) : t.paused || t.ended ? t.play().catch(() => {}) : t.pause()) : (clearTimeout(c), u = {
 						at: Date.now(),
 						zone: l
 					}, c = setTimeout(() => {
-						d = null, !t.paused && !t.ended && r.visible && !g() ? (clearTimeout(o), v()) : y();
+						u = null, !t.paused && !t.ended && r.visible && !h() ? (clearTimeout(o), _()) : v();
 					}, 300));
 				}
-				d || y();
+				u || v();
 			}
 		}
 	}, { signal: n }), e.addEventListener("pointercancel", () => {
-		f = Date.now() + 1e3, T();
+		d = Date.now() + 1e3, w();
 	}, { signal: n }), e.addEventListener("lostpointercapture", () => {
-		m && T();
+		p && w();
 	}, { signal: n }), e.addEventListener("click", (e) => {
-		i && A8().touchGestures && (x(e) ? (e.pointerType === "touch" || Date.now() < f) && (e.preventDefault(), e.stopImmediatePropagation()) : y());
+		i && A8().touchGestures && (b(e) ? (e.pointerType === "touch" || Date.now() < d) && (e.preventDefault(), e.stopImmediatePropagation()) : v());
 	}, {
 		signal: n,
 		capture: !0
 	}), i && t.addEventListener("click", () => {
 		t.paused ? t.play().catch(() => {}) : t.pause();
 	}, { signal: n }), e.addEventListener("dblclick", (n) => {
-		x(n) && (Date.now() < f ? (n.preventDefault(), n.stopImmediatePropagation()) : n.target === t && e.querySelector("media-fullscreen-button")?.click());
+		b(n) && (Date.now() < d ? (n.preventDefault(), n.stopImmediatePropagation()) : n.target === t && e.querySelector("media-fullscreen-button")?.click());
 	}, {
 		signal: n,
 		capture: !0
-	}), e.addEventListener("focusin", y, { signal: n }), e.addEventListener("peach-touch-cancel", () => T(), { signal: n }), e.addEventListener("contextmenu", (t) => {
-		e.dataset.playerInput === "touch" && x(t) && t.preventDefault();
-	}, { signal: n }), window.addEventListener("blur", () => T(!1), { signal: n }), document.addEventListener("visibilitychange", () => {
-		document.hidden && T(!1);
+	}), e.addEventListener("focusin", v, { signal: n }), e.addEventListener("peach-touch-cancel", () => w(), { signal: n }), e.addEventListener("contextmenu", (t) => {
+		e.dataset.playerInput === "touch" && b(t) && t.preventDefault();
+	}, { signal: n }), window.addEventListener("blur", () => w(), { signal: n }), document.addEventListener("visibilitychange", () => {
+		document.hidden && w();
 	}, { signal: n });
-	for (let e of ["loadstart", "emptied"]) t.addEventListener(e, () => T(!1), { signal: n });
-	let E = new MutationObserver(() => {
-		g() && y();
+	for (let e of ["loadstart", "emptied"]) t.addEventListener(e, () => w(), { signal: n });
+	let T = new MutationObserver(() => {
+		h() && v();
 	});
-	return E.observe(e, {
+	return T.observe(e, {
 		subtree: !0,
 		attributes: !0,
 		attributeFilter: ["aria-expanded"]
 	}), n.addEventListener("abort", () => {
-		T(!1), clearTimeout(o), E.disconnect(), a.remove();
+		w(), clearTimeout(o), T.disconnect(), a.remove();
 	}, { once: !0 }), {
-		active: y,
-		cancel: T
+		active: v,
+		cancel: w
 	};
 }
 // src/player/v10-player.ts
@@ -71198,7 +71200,7 @@ var xT = (e) => typeof e == "string" ? [e] : e, jwe = (e, t) => {
 			e.poster = t;
 		},
 		src: (t) => {
-			_(!1), h(), p = t, m = null, n.classList.remove("vjs-error"), u++, d++, E = !1, T = [], C.length = 0;
+			_(), h(), p = t, m = null, n.classList.remove("vjs-error"), u++, d++, E = !1, T = [], C.length = 0;
 			let r = t.type.toLowerCase().includes("dash") ? "dash-video" : "hlsjs-video";
 			if (a.localName !== r) {
 				let t = a;
@@ -110509,11 +110511,11 @@ var att = {
 		unit: "seconds",
 		fallback: 10
 	},
-	swipeMinutesSetting: {
+	swipeSecondsSetting: {
 		min: 1,
-		max: 120,
-		unit: "minutes",
-		fallback: 20
+		max: 60,
+		unit: "seconds",
+		fallback: 15
 	},
 	doubleTapPercentSetting: {
 		min: 15,
@@ -112568,15 +112570,16 @@ function tnt({ host: e, epoch: t }) {
 				}
 			}),
 			n.touchGestures ? /* @__PURE__ */ (0, V.jsxs)(V.Fragment, { children: [/* @__PURE__ */ (0, V.jsx)(rI, {
-				title: z("settings:playbackGestures.swipeMinutes"),
+				title: z("settings:playbackGestures.swipeSeconds"),
+				description: z("settings:playbackGestures.swipeSecondsHelp"),
 				children: /* @__PURE__ */ (0, V.jsx)("div", {
-					id: "swipeMinutesSetting",
+					id: "swipeSecondsSetting",
 					children: /* @__PURE__ */ (0, V.jsx)(BF, {
-						id: "swipeMinutesSetting",
-						label: z("settings:playbackGestures.swipeMinutes"),
-						value: n.swipeMinutes,
+						id: "swipeSecondsSetting",
+						label: z("settings:playbackGestures.swipeSeconds"),
+						value: n.swipeSeconds,
 						onApply: (e) => {
-							n.swipeMinutes = k8({ swipeMinutes: e }).swipeMinutes, r();
+							n.swipeSeconds = k8({ swipeSeconds: e }).swipeSeconds, r();
 						}
 					}, t)
 				})
@@ -152233,4 +152236,4 @@ if (!kHt) throw Error(z("shell:errorReport.hostMissing"));
 YVt(kHt);
 export { F5 as $2ec61d1d4f780267$export$a8a3e93435678ff9, j5 as $43a3b93638fe5db9$export$b04be29aa201d4f5, G7 as $49319ee1285aa241$export$2ce376c2cc3355c8, U7 as $49319ee1285aa241$export$4b1545b4f2016d26, V7 as $49319ee1285aa241$export$d9b273488cd8ce6f, A7e as $53e61d82d8b8611d$export$8b251419efc915eb, P7 as $542a13ca2fa5b484$export$5b6b19405a83ff9d, j6 as $72abaeab4d80592f$export$78efe591171d7d45, k9 as $76d00c5a4edb230a$export$76ccd210b9029917, E9 as $76d00c5a4edb230a$export$816b5d811295e6bc, M9 as $76d00c5a4edb230a$export$b59bdbef9ce70de2, P9 as $76d00c5a4edb230a$export$f6f0c3fe4ec306ea, T9 as $76d00c5a4edb230a$export$f850895b287ef28e, n7 as $806e559d0c2c64a0$export$105594979f116971, r7 as $806e559d0c2c64a0$export$2c1b491743890dec, t7 as $806e559d0c2c64a0$export$472062a354075cee, V9 as $b4f18e3395fe64d7$export$3d96ec278d3efce4, B9 as $b4f18e3395fe64d7$export$3e41faf802a29e71, R9 as $b4f18e3395fe64d7$export$b2539bed5023c21c, z9 as $b4f18e3395fe64d7$export$e51a686c67fdaa2d, p7 as $e28ab3efe3e87743$export$1ff3c3f08ae963c0, l6 as $ea3928288112382f$export$439d29a4e110a164, J7 as $f2ff30fde7b014be$export$3ddf2d174ce01153, r9 as $fe21c36db05242bb$export$a98f0dcb43a68a25, i9 as $fe21c36db05242bb$export$d7b12c4107be0d61, Mx as $l, T8 as ACCENTS, rY as ACCOUNT_DASHBOARDS, YAt as AILibrarySettings, gL as AIProviderLabel, hL as AIProviderLogo, ZJ as AI_ASSET_TASKS, mY as AI_CONNECTIONS_KEY, pY as AI_CONNECTIONS_URL, _et as AMANE_BRIDGE_CHECK_URL, Cet as AMANE_BRIDGE_KEY, vet as AMANE_BRIDGE_REBUILD_URL, OS as ActionSpinner, Tq as ActivePoints, kS as ActivityMotion, AS as ActivityStatus, iq as AnimatedItems, dFe as AnimatedNumber, Aa as ApiError, Fj as ArtSlot, Ait as BATCH_DELETE_TEXT, x8e as BC, dVt as BackgroundIssues, Y as Button, Yb as ButtonLink, Hx as Bx, dAt as CHART_CARD, JJ as CHART_COLORS, xet as CHECK_ALL_KEY, TF as CLEANUP_ENTRY, wF as CLEANUP_ENTRY_GRID, tte as CLEANUP_HASH_REDIRECTS, Ah as CLEANUP_TOOLS, ci as CLOUD_LOCATIONS, Unt as CLOUD_PROXY_HELP, Fo as COLUMN_SORT, Yet as CONFIGURATION_KEY, oh as CONFIGURATION_SECTIONS, PGe as CONFIGURATION_URL, wet as COOKIE_TEXT_LIMIT, bet as COVER_JOB_KEY, _f as COVER_STATE_TITLE, hee as CREDENTIAL_STATE, set as CUSTOM_SOURCES_KEY, oet as CUSTOM_SOURCES_URL, uY as CUSTOM_TASKS_URL, UAt as CUSTOM_TASK_EDITOR_URL, cN as CardTags, RK as CartesianLabelListContextProvider, AC as CastPopover, QVe as CatalogColumnFilterChips, LM as CatalogDisplayControls, RVe as CatalogPerformerTile, zVe as CatalogStudioTile, RM as CatalogViewToggle, rkt as CategoricalChart, vAt as CategoryTick, oK as Cell, Bkt as ChartBackground, ykt as ChartContainer, xSt as ChartDataContextProvider, fAt as ChartEmpty, yAt as ChartHead, Mkt as ChartLegend, Okt as ChartLegendContent, XJ as ChartTip, HJ as ChartTooltip, Ekt as ChartTooltipContent, Y9 as Checkbox, J9 as CheckboxGlyph, $9 as ChevronSortDown, QA as Chip, Mj as CloseButton, Hj as CloudDownloadDialog, hA as CollapseChevron, mA as CollapseRegion, _5 as ColumnFilterAvatar, aN as ColumnFilterChips, TC as ColumnFilterPopover, o5e as ColumnFilterStudioAvatar, eN as Combo, FDe as CommandSteps, wXe as CoverQueue, v8e as Ct, xV as Curve, mft as DATA_ITEM_GRAPHICAL_ITEM_ID_ATTRIBUTE_NAME, pft as DATA_ITEM_INDEX_ATTRIBUTE_NAME, zWe as DEFAULT_CATEGORY, Fa as DEFAULT_SORT, HZe as DIAGNOSTICS_KEY, eKe as DIRECTORY_TEMPLATE_ERROR, VRe as DISCOVERY_METADATA_KEY, lj as DISCOVERY_SORTS, lLe as DISCOVERY_TABLE_ID, hj as DISCOVERY_TABLE_KEYS, $D as DOWNLOADS_KEY, QD as DOWNLOADS_URL, NN as DUPLICATES_KEY, oWe as DUPLICATES_URL, Oa as DURATION_TAGS, wK as DataLabelColorsContextProvider, EK as DataLabelThemeContextProvider, xPe as DataTable, xk as DataTableFooter, yk as DataTableFrame, bk as DataTableSort, XV as DefaultZIndexes, CD as Disclosure, UK as Dot, Sq as Dots, rRe as DownloadsPanel, u8e as E3, HD as EDITION_TONE, VWe as ENTITY_REVIEW_KINDS, Vnt as ENTRY_LINKS_HELP, fI as ENTRY_LINKS_HINT, vxe as ES, Ix as Ea, $Pe as EffortFlow, CPe as EmptyFocusButton, Qk as EmptyState, Cst as EntryFillDefinitions, bD as ErrorText, lxe as Eu, GJ as EvilBarChart, SD as ExternalLink, Mo as FEEDS_KEY, ao as FEED_SOURCE_CARD, co as FEED_SOURCE_COLUMNS, so as FEED_SOURCE_COLUMN_LABELS, oo as FEED_SOURCE_FOOTER, io as FEED_SOURCE_TABLE, SF as FIELDSET_FOOT, BPt as FLOW_LABEL_X, zPt as FLOW_VIEWBOX, Ao as FOLLOW_CHECK_KEY, bOe as FOLLOW_CHECK_TASK, Qs as FOLLOW_CREDENTIALS_KEY, ko as FOLLOW_CREDENTIALS_KEY$1, PIt as FOLLOW_INITIAL_RANGE_OPTIONS, Oo as FOLLOW_MANAGE_KEY, FP as FOLLOW_MANAGE_NAV, jo as FOLLOW_RESOLVE_KEY, RDe as Fact, LDe as FactList, xD as FieldLabel, M$e as Fieldset, j$e as FieldsetTitle, jR as FillObjectDefinition, FR as FillObjectPaint, _C as FilterActionButton, lO as FilterChoiceList, uO as FilterDropdown, pC as FilterGlassRows, dC as FilterIconButton, fC as FilterSearch, gC as FilterTagStrip, hC as FilterToolbarControls, HSe as FollowSearch, vD as Footer, zx as Gg, bx as H7, oxe as HN, yD as Help, TWe as IDLE_REPAIR, oN as Icon, zS as IconButton, m5 as ImageWithFallback, FS as IndexSearch, TS as Input, wS as InputBase, P$e as IssueRow, mZe as ItemEditDialog, GDe as ItemLibrary, met as JAVDB_BROWSER_LOGIN_URL, wj as JAV_CATALOG_TIERS, J8 as JAV_LAYOUTS, vLe as JAV_PAGE_BODY, xj as JAV_RECOMMENDATION_GRID, kIt as JAV_SELECTION_EVENT, xLe as JAV_TAG_STRIP_SKELETON, HKe as JUNK_KEY, Vx as JZ, lze as JavGlassSearch, Xbe as K1, hWe as KEEP_LABELS, uWe as KEPT_DUPLICATES_KEY, qbe as L1, No as LAYOUTS, g5 as LEGACY_AVATAR_IMG, Bnt as LIBRARY_FOLDER_HELP, tA as LIBRARY_PROCESSING_KEY, xGe as LINKS_KEY, SGe as LINK_CHECK_KEY, wGe as LINK_KINDS, CGe as LINK_PRUNE_KEY, Ta as LOC, yS as Label, BK as LabelList, VK as LabelListFromLabelProp, DL as Layer, ajt as LibraryAIPanel, jD as LibraryLabel, K$e as LibraryProcessingCard, FM as LibraryShortcuts, Z9 as LinkButton, BUe as ListCredits, kN as ListLibrary, bkt as LoadingIndicator, Tx as M6, zEe as MEDIA_PROCESSING_KEY, REe as MEDIA_PROCESSING_URL, CWe as MEDIA_REPAIR_KEY, SWe as MEDIA_REPAIR_URL, Qa as MEDIA_SOURCES_KEY, ru as MEDIA_SOURCE_ICONS, oi as MEDIA_SOURCE_OPTIONS, iS as MENU_ITEM, rS as MENU_ITEMS_CONTAINER, BSe as MENU_ITEM_ACTIVE, aS as MENU_ITEM_INTERACTIVE, tS as MENU_POPOVER_SURFACE, nS as MENU_POPOVER_WIDTH, DD as MarkImage, dN as MediaAvatarStack, eS as MenuChevron, LS as MenuDialog, UHe as MixCard, dO as ModalFrame, gxe as NR, N$e as NameLink, FD as NavigationOrderRows, SC as Note, Xx as OA, vj as ONLINE_SORTS, yj as ONLINE_STATUS, gj as ONLINE_TABLE_ID, _j as ONLINE_TABLE_KEYS, WN as ORGANIZE_KEY, Dit as ORGANIZE_PARAMETER_HINT, Eit as ORGANIZE_SCOPE_HINT, Tit as ORGANIZE_TEXT, sKe as ORPHAN_RECORDS_KEY, kit as ORPHAN_RECORDS_TEXT, J8e as OV, fO as ObjectOrderDialog, Wx as Ov, xx as P7, FKe as PERFORMER_DELETE_KEY, xRe as PHASES, FGe as PICK_FOLDER_URL, _$e as PLAIN_STAT_STRIP, kF as PLAYLISTS_KEY, Lnt as POLICY_COLUMNS, znt as POLICY_COVER_NOTE, Rnt as POLICY_MATRIX, Int as POLICY_SUMMARY, jNe as Pagination, L$e as PathLine, Pj as PerformerCredit, Jx as Pf, v$e as PlainStat, v5t as PolarLabelContextProvider, O5t as PolarLabelFromLabelProp, L5t as PolarLabelListContextProvider, aFe as ProcessingMode, fA as Progress, IN as QUALITY_GOALS_KEY, Nj as QueryErrorNote, GQe as QueueFilterChips, qQe as QueueIdentity, JQe as QueuePicture, KQe as QueueTable, _x as R5, qx as RB, cKe as RECORD_LABELS, aLe as RELEASE_COLUMN_VISIBILITY_KEY, iLe as RELEASE_COLUMN_WIDTHS_KEY, ej as RELEASE_NOTICE_EVENT, Qj as RELEASE_PAGE_SIZES, uj as RELEASE_SORTS, cLe as RELEASE_SORT_COLUMNS, LZe as REPAIRS_KEY, x$e as REPAIR_CARD_TEXT, uh as REPAIR_CENTER_PATH, wWe as REPAIR_LIBRARIES_KEY, yKe as RESOURCE_APPLY_KEY, vKe as RESOURCE_SCAN_KEY, Oit as RESOURCE_SYNC_TEXT, O$e as RESULT_PANEL, k$e as RESULT_SECTION, RWe as REVIEW_CATEGORIES, BKe as REVIEW_COUNTS_KEY, UWe as REVIEW_DECISION_LABELS, RN as REVIEW_KEY, zN as REVIEW_LABELS, BN as REVIEW_QUEUES, HWe as REVIEW_QUEUE_LABELS, jOe as RUNNING_POLL_MS, ZVt as RadioDot, QVt as RadioGroup, gOt as RechartsStoreProvider, aq as RegisterGraphicalItemId, yOt as ReportChartProps, bOt as ReportEventSettings, vOt as ReportMainChartProps, rN as RetryNote, hxe as Rf, MDe as Rows, Dx as Rt, GEe as SCHEDULES, pet as SCRAPING_CHECK_ALL_URL, fet as SCRAPING_CHECK_URL, het as SCRAPING_COVER_URL, yet as SCRAPING_KEY, det as SCRAPING_SETTINGS_URL, JS as SEGMENT, qS as SEGMENTED_TRACK, WE as SETTINGS_KEY, VE as SETTINGS_URL, Ia as SORT_DEFAULT_DIR, Pa as SORT_OPTIONS, li as SOURCE_LABELS, xNt as STATS_KEY, m$e as STAT_STRIP, h$e as STAT_STRIP_SIX, kD as ScrapeSourceLabel, gD as Section, A$e as SectionHeading, NDe as SectionSkeleton, wat as SectionToc, Zgt as Sector, KS as SegmentedRadioGroup, GS as SegmentedTabList, tN as Segments, tD as Select, QE as Select$1, vC as SelectAllButton, zF as SelectField, eD as SelectItem, $E as SelectItem$1, YNe as SelectionActions, e8 as SelectionDock, XNe as SelectionPopover, V7t as SetPolarGraphicalItem, m7t as SetPolarLegendPayload, ZK as SetTooltipEntrySettings, kDe as SettingsCard, jDe as SettingsRow, qK as Shape, AM as ShellActionsContext, nN as Shuffle, UDe as SiteIcon, WDe as SiteLabel, OD as SiteMark, NNe as SortDirectionIcon, BM as SortKeys, LD as SortableBoardTabs, h5 as SourceAvatar, AD as SourceLabel, TD as SourceMark, _D as Stack, kVt as StartupCapture, y$e as StatCard, $A as StatusLabel, VF as Switch, EOe as TASKS_KEY, _Pt as TASTE_REFRESH_KEY, kPt as TASTE_REFRESH_TASK, vPt as TASTE_WINDOWS, LEe as THUMBNAIL_JOBS_KEY, SAt as TIP_SURFACE, wAt as TIP_SWATCH, WKe as TRASH_KEY, VOe as TRIGGER_LABELS, dk as Table, Pk as TableColumnControls, wC as TableColumnFilter, qk as TableColumnRange, Fk as TableColumnResizer, zk as TableDateBound, Jk as TableRangeFields, Ik as TableSelectionHeader, Lk as TableToolbar, IDe as TaskCenterLink, jVt as TaskIcon, pA as TaskProgress, pFe as TaskStage, bK as Text, SS as TextField, mL as Textarea, CAt as TipRow, mxe as UB, B8e as Un, _xe as Uz, Wj as WANTS_KEY, dMt as WantMagnets, Ox as Wt, M8e as Xc, Yx as Xf, kx as Xt, Ax as Yt, $G as ZIndexLayer, Cx as _8, l as __toESM, Gx as _p, fxe as aB, uA as activityKind, zR as adaptEventsOfChild, hs as addAlias, J5t as addAngleAxis, K5t as addRadiusAxis, ms as addSource, Gj as addWant, gY as aiConnectionLabel, eY as aiModelLabel, QJ as aiSearchModelsKey, W as apiGet, G as apiSend, G8 as appSettingsStore, jKe as applyConfirmText, SK as applyLabelTheme, NKe as applyLeftovers, AKe as applyPlanText, yZe as applySavedItem, PKe as applyText, q8 as applyTheme, iK as arrayTooltipSearcher, uKe as attachOrphan, Zo as authorAvatar, $o as authorGroups, Xo as authorInitial, Yo as authorName, Jo as authorPortrait, cl as avatarInner, dx as b1, zNt as bandRows, tKe as baseName, xWe as batchOperate, Lwe as beginPlayerGuidePreview, ji as bodyFieldErrors, a8 as boundedPreference, vWe as bulkCloudPreferences, Xb as busyProps, dxe as cB, oMt as cachedMagnetStates, QWe as canApprove, hKe as candidateText, jk as cardClass, nx as cardRatio, OC as castPersonName, sj as catalogListSkeletonCellHtml, _At as categoryAxisWidth, EIe as checkClientUpdates, Rs as checkEvidenceGap, Ls as checkFailures, Ds as checkFeeds, NGe as checkLine, Fs as checkReceipt, Is as checkSummary, Aet as checkText, VZe as checkText$1, zs as checkedText, rL as cleanupToolSkeletonHtml, fk as clickedBlank, dQ as closeDrawerAfterNav, oVe as cloudLocations, art as cloudProxySkeleton, f2 as clsx, LJ as cn, z8e as cn$1, Di as codedText, IO as columnOrderingFeature, oS as columnRangeKinds, fPe as columnRangeSummary, fS as columnValueSelected, BO as columnVisibilityFeature, _St as combineAllBarPositions, R2t as combineAppliedValues, tG as combineAxisDomain, oG as combineAxisDomainWithNiceTicks, H4t as combineAxisTicks, ySt as combineBarPosition, dSt as combineBarSizeList, lG as combineCategoricalDomain, T1t as combineCheckedDomain, bW as combineConfiguredScale, IW as combineDisplayedData, uH as combineDisplayedStackedData, QW as combineDomainOfAllAppliedNumericalValuesIncludingErrorValues, qW as combineDomainOfStackGroups, W4t as combineGraphicalItemTicks, FW as combineGraphicalItemsData, NW as combineGraphicalItemsSettings, iG as combineNiceTicks, eG as combineNumericalDomain, WW as combineStackGroups, m4t as combineStackOffsetTypeOfAxis, vSt as combineStackedData, XWe as commonReviewSources, _S as composingKey, Zee as configurationDescriptionKey, fh as configurationSection, SPt as configureTasteBrowser, Yd as confirmModal, WRe as controlDiscoveryMetadata, nze as controlReleaseMetadata, LOe as controlTask, RRe as coverArrived, FRe as coverFetching, yf as coverFetchingHtml, gf as coverReason, vf as coverStateAction, el as coverUrl, PO as createColumnHelper, nNe as createPaginatedRowModel, $$e as createPlaylist, X as createSelector, iNe as createSortedRowModel, gee as credentialDone, trt as credentialsSkeleton, fGe as currentReviewRow, J as cx, h8e as d6, Bx as dZ, cGe as decisionPayload, lGe as decisionReceipt, sGe as defaultChoice, ZV as defaultPolarAngleAxisProps, QV as defaultPolarRadiusAxisProps, Agt as degreeToRadian, RKe as deletePerformerVideos, tet as deletePlaylist, bl as detailPosterUrl, vrt as devicesSkeleton, x as diagnosticHeaders, Fnt as diagnosticsSkeleton, rze as discoveryArtwork, kC as discoveryCast, uLe as discoveryColumns, zRe as discoveryKey, dj as discoveryOrder, YIe as discoveryScore, $Q as disposeStage, DC as dmmPerformerName, Ns as dropSources, cxe as du, yWe as duplicateVictims, Art as duplicatesSkeleton, hx as e0, hOe as editionName, cke as elapsedText, Ok as enterPageSelection, qr as entityDisplayName, sl as entityFaceImg, aa as entityPath, Ur as entityWriting, Uo as errorHeadline, ja as errorMessage, U as esc, kk as exitPageSelection, ux as f1, Ho as feedIntervalText, qrt as feedSourcesSkeleton, Oet as fetchAmaneBridge, Det as fetchCheckAllJob, ss as fetchCheckJob, Qet as fetchConfiguration, Eet as fetchCoverJob, IRe as fetchCoverNow, os as fetchCredentials, cet as fetchCustomSources, IKe as fetchDeletePerformers, LKe as fetchDeletePlan, UZe as fetchDiagnostics, BRe as fetchDiscoveries, URe as fetchDiscoveryMetadata, FN as fetchDuplicates, ws as fetchFeeds, as as fetchFollow, i5 as fetchItem, qKe as fetchJunkSummary, fWe as fetchKeptDuplicates, rA as fetchLibraryProcessing, DGe as fetchLinkCheck, kGe as fetchLinkPrune, EGe as fetchLinkStats, BEe as fetchMediaProcessing, EWe as fetchMediaRepair, $a as fetchMediaSources, qGe as fetchOrganize, KGe as fetchOrganizeExample, lKe as fetchOrphanRecords, net as fetchPlaylist, J$e as fetchPlaylists, LN as fetchQualityGoals, tze as fetchReleaseColumn, $Re as fetchReleases, DWe as fetchRepairLibraries, zZe as fetchRepairs, cs as fetchResolveJob, SKe as fetchResourceApply, bKe as fetchResourceScan, uGe as fetchReview, KKe as fetchReviewCounts, GE as fetchSettings, Tet as fetchSources, SNt as fetchStats, ls as fetchSuggestions, IOe as fetchTasks, CPt as fetchTaste, wPt as fetchTasteJob, UEe as fetchThumbnailJobs, JKe as fetchTrashSummary, SRe as fetchWants, $xt as filledShapeLabelColors, JWe as filterReviewRows, r7t as findAllByType, Ca as firstGrapheme, gAt as fitLabel, pO as flexRender, WPt as flowGraph, GPt as flowLabel, wNt as fmtCount, _a as fmtDur, ya as fmtSize, AOe as foldByKind, QOe as foldRoutine, As as followFeedPages, Xrt as followListSurfaceSkeleton, ske as followupDetail, kOe as followupTally, gx as g4, pxe as gB, NL as get, gq as getActiveStyleOverrides, eH as getAxisTypeBasedOnLayout, PB as getBandSizeOfAxis, ift as getBaseValueOfBar, NB as getCateCoordinateOfBar, Z5t as getClassNameFromUnknown, mst as getColorGraphicalItems, VJ as getColorsCount, f1t as getDataKeyOnAxis, vq as getDotSymbol, s9t as getEntryColor, NR as getEntryFillId, Tst as getEntryFillObject, mq as getEntryShapeColors, fq as getEntryStyleOverrides, OR as getFillUrl, Est as getIndexedEntryFillObject, yq as getLegendPayloadDot, Mgt as getMaxRadius, jB as getNormalizedStackId, i9t as getOwnStyles, HL as getPercentValue, AR as getSeriesFillId, FB as getTooltipNameProp, kB as getValueByDataKey, bSt as getZIndexFromUnknown, tx as gridLayout, Qo as groupByAuthor, ZOe as groupFollowups, pWe as groupKey, qWe as groupReviewRows, mx as h2, f8e as h8, axe as hN, EKe as hasChanges, wst as hasEntryFillObjects, lq as hasOwnColors, wKe as hasResourceRoots, nO as hasResultProblems, gk as hasSelectionModifier, jPt as historySpan, fx as i2, rxe as iE, KR as identity, OPt as importTasteExport, nrt as indexersSkeleton, OJ as initialEventSettingsState, Ct as interfaceLanguage, UL as interpolate, qj as invalidateWants, eke as isActive, qR as isArrayLike, Vo as isBroken, AB as isCategoricalAxis, bL as isDataAttribute, Io as isLayout, WL as isNullish, zL as isNumber, BWe as isReviewCategory, $Oe as isRoutine, dH as isStackedGraphicalItem, yL as isSvgElementPropKey, jW as itemAxisPredicate, e5 as itemKey, ult as iteratee, rrt as javBrowserSkeleton, Sj as javContentSkeleton, Tj as javFacetTiersHtml, Z8 as javLayout, d5 as javSubscriptionPath, TA as javTab, bLe as javTagPlaceholdersHtml, Oi as jobText, Dt as joinList, ZKe as junkBreakdown, sWe as keepGroup, cWe as keepGroups, iet as keepPlaylist, Dn as keepPreviousData, ns as keepSelected, vX as known, O8e as ks, Kbe as l1, t8e as l5, i8e as l7, jRe as lastSearchNote, XOe as latestOfKind, Sa as leadingGraphemes, yrt as ledgerBackupsSkeleton, BNt as lengthRows, Bj as librarySuggest, Ji as linkLabel, ro as localTime, RZe as localizeRepairs, Jet as localizedFact, il as logoUrl, Os as lookupFeedActor, yx as m7, Y8e as mM, Qi as mapLimit, Cs as markAllPending, tq as matchAnimationItems, x7t as matchAppend, $K as matchByIndex, DAt as matchesAIModel, IL as mathSign, LNt as mediumRows, HRe as metadataInterval, _Ge as mirrorText, jWe as missingToolText, _We as mixedCloudPreferences, BAt as modelIsVisible, oO as momentText, Uv as motion, qL as noop, fH as numberDomainEqualityCheck, Qbe as o2, eSt as omit, c9t as omitEntrySvgProps, bDe as onLibraries, SLe as onlineCatalogCardsHtml, pLe as onlineColumns, hLe as onlineSorting, gLe as onlineStatus, iKe as organizeOutcome, Kk as outsideTableDateBound, xM as overlayHost, lx as p, Lo as pageSizeOf, ts as pageWindow, Si as partsLabel, Ms as patchSource, eg as peachHistory, eg as peachHistory$1, oGe as pendingGenres, ENt as percentText, JLe as performerProfileHref, cH as pickAxisId, sH as pickAxisType, XGe as pickOrganizeFolder, IGe as pickServerFolder, g$e as plainStatClass, rKe as planSummary, DNt as playedFor, jNt as playedItemUrl, kV as polarToCartesian, NOe as pollInterval, Xa as pollUntil, Fu as popCount, Q$e as posterUrl, $J as preferredAIConnection, DDe as previewLibraryColor, YGe as previewOrganize, PWe as previewUrl, JOe as problemDestination, nA as processingActive, ike as progressLabel, iO as progressText, HDe as providerIcon, MGe as pruneText, uD as publishedLibraries, KN as purgeCount, dKe as purgeOrphan, Ux as pv, Kx as qE, jrt as qualityGoalsSkeleton, K as queryClient, Ot as quoted, Q8e as qx, px as r2, RPt as radarRows, PNt as radialArc, FNt as radialBarSize, NNt as radialCeiling, MNt as radialSlices, iT as randomId, FPt as rankDetail, IPt as rankShares, kNt as reachedShare, hS as readColumnFilters, MR as readEntryFill, aO as readableErrorHeadline, bH as rechartsScaleFactory, XIe as recommendationScore, pGe as recordGenre, pKe as recordsText, aet as recreatePlaylist, X$e as refreshPlaylists, pf as relayoutCovers, qRe as releaseColumnSelection, JRe as releaseColumnValues, mj as releaseColumns, eze as releaseDateQuery, GRe as releaseFilters, XRe as releaseKey, Ps as reloadFollowManage, gGe as reloadReview, Gwe as rememberPageSize, Knt as rememberShape, QGe as rememberTemplates, jT as rememberedPageSize, rl as remoteCoverUrl, gs as removeAlias, Y5t as removeAngleAxis, Es as removeFeed, q5t as removeRadiusAxis, ps as removeSource, DPt as removeTasteSource, Kj as removeWants, _s as renameAliasGroup, eet as renamePlaylist, ret as reorderPlaylist, Mrt as repairCenterPanelSkeleton, HNt as replayRows, Xt as require_jsx_runtime, Vt as require_react, DRe as resetWants, BR as resolveDefaultProps, Ra as resolveFollowSort, Vj as resourceSourceKey, LPe as restartEffectText, ORe as restoreWants, Z$e as resumeAssetId, KWe as reviewGroupingOptions, VN as reviewQueueData, WWe as reviewQueueOf, XKe as reviewSummary, YWe as reviewWindow, FL as roundTemplateLiteral, iGe as rowEvidence, nGe as rowFieldName, qO as rowPaginationFeature, ak as rowSelectionFeature, hPe as rowSelectionOperation, lk as rowSortingFeature, $We as rowSubject, aGe as rowTags, rGe as rowTitle, Qb as runBulkAction, ake as runError, vx as s7, vs as saveCredential, DKe as scanLine, YEe as schedulePollInterval, ARe as searchNote, lh as sectionTitle, VG as selectActiveTooltipDataKey, u6t as selectActiveTooltipGraphicalItemId, BG as selectActiveTooltipIndex, KW as selectAllErrorBarSettings, nH as selectAngleAxis, G_t as selectAngleAxisRangeWithReversed, WV as selectBarCategoryGap, M_t as selectBarGap, kW as selectBaseAxis, FV as selectChartDataAndAlwaysIgnoreIndexes, r_t as selectChartDataSliceIgnoringIndexes, PV as selectChartDataWithIndexes, tV as selectChartLayout, HB as selectChartOffsetInternal, YW as selectDomainDefinition, XW as selectDomainFromUserPreference, mG as selectDuplicateDomain, oH as selectPolarViewBox, rH as selectRadiusAxis, q_t as selectRadiusAxisRangeWithReversed, _k as selectRange, rG as selectRealScaleType, AW as selectRenderableAxisSettings, KV as selectReverseStackOrder, ZWe as selectReviewRange, N_t as selectRootBarSize, UV as selectRootMaxBarSize, GV as selectStackOffsetType, HW as selectTooltipAxis, rs as selectionState, CNe as selectionSummary, bi as serverLabel, Ei as serverLabelList, Mi as serverText, Ts as setFeedEnabled, YRe as setReleaseColumn, fs as setSourceEnabled, ROe as setTaskSpeed, gh as settingsPath, hGe as settleReviewRows, tg as shellNavigate, dIt as showToast, da as siteMarkUrl, xAt as sliceConfig, bAt as sliceKey, qb as sortCx, pee as sortLabel, ui as sourceDefaultCost, Vs as sourceIconUrl, MKe as sourceMeta, xu as spinnerHtml, kR as splitFill, DS as spriteGlyph, xi as stageText, us as startCheck, OGe as startLinkCheck, AGe as startLinkPrune, ZGe as startOrganize, ds as startResolve, CKe as startResourceApply, xKe as startResourceScan, EPt as startTasteRefresh, p$e as statCardClass, Ort as statsSkeleton, UOe as statusLabel, AWe as statusLine, Bo as statusText, bbe as storeJavLayout, dGe as submitDecision, ks as suggestFeedActors, _ke as summaryItems, pk as suppressShiftTextSelection, CL as svgPropertiesAndEvents, xL as svgPropertiesNoEvents, SL as svgPropertiesNoEventsFromUnknown, z as t, l8e as t3, FO as tableFeatures, es as tableRows, jf as tagLabel, jIt as takeJavSelection, KOe as taskIssues, rO as taskName, Qrt as taskRunSectionsSkeleton, YOe as taskSubject, APt as tasteDate, NPt as tasteDimensions, MPt as tasteHours, gPt as tasteKey, bPt as tasteRefetchInterval, xPt as tasteTime, VD as textLang, W8e as th, pj as tierPlaceholdersHtml, w8e as tl, pS as toggleColumnValue, is as toggleGroup, YJ as tone, LPt as topScores, PDe as translateWithNodes, eft as truncateByDomain, mee as unmarkItems, P8e as uo, XDt as updatePolarOptions, EAt as useAIConnectionModels, zAt as useAIModelVisibility, jAt as useAccountUsage, f5 as useAction, rq as useAnimationCallbacks, nq as useAnimationStartSnapshot, oz as useAppDispatch, cz as useAppSelector, QJe as useBackgroundJob, VR as useBackwardsCompatibleTheme, QS as useCatalogView, TIe as useClientUpdates, WAt as useCustomTasks, a5t as useDataLabelThemeResolver, BS as useDatalistSuggest, lN as useDense, Oq as useEffectiveDataKey, Qx as useEntityNames, Ost as useFillPaint, mC as useFilterScope, Eq as useGraphicalItemIdentity, Dq as useGraphicalItemThemeFill, VS as useHorizontalScroller, o5t as useIndexedLabelThemeResolver, WB as useIsPanorama, Yj as useJavAddress, zM as useLibraryFilterOptions, hD as useLibraryTints, XK as useMouseClickItemDispatch, JK as useMouseEnterItemDispatch, YK as useMouseLeaveItemDispatch, xr as useMutation, br as useMutationState, MD as useNavigationOrder, B$e as useOrderedLibraries, yC as useOverlayScrollbar, Ak as usePageSelection, rpt as usePolarChartLayout, vr as useQuery, Qt as useQueryClient, e$e as useQueueSort, CR as useRechartsTheme, vk as useRectangleSelection, Hv as useReducedMotion, MT as useRememberedPageSize, Kwe as useRememberedPagination, Zk as useRowWorkContext, JEe as useRunSchedule, KEe as useSaveSchedule, KE as useSaveSettings, XEe as useSaveThumbnailMode, TK as useSeriesDataLabelColors, DK as useSeriesLabelThemeResolver, uk as useTable, Yk as useTableFilters, Nk as useTablePreferences, GNe as useTableSelection, hst as useThemeFillObject, Dst as useThemeFillObjects, hq as useThemedActiveStyles, dq as useUnthemedColors, WS as useViewGlide, Xk as useWorkContextMenu, no as utcDate, uS as validRange, bWe as victimBytes, VAt as visibleAIModels, kRe as wantName, CRe as wantsInterval, ANt as watchNote, ONt as watchedShare, _8e as we, gd as wireHorizontalScroller, qa as withBackoff, Sst as withEntryFillColor, ER as withFillColor, $Ge as withOrganizeJob, dS as withinColumnRange, uq as withoutColors, gS as writeColumnFilters, Jj as writeJavQuery, Fx as xs, d8e as z3 };
 
-//# debugId=10d324b0-5c58-4c9a-9785-3e59af95d57f
+//# debugId=d6bbab9d-3c37-4027-9ddb-46ffdaae5240

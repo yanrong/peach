@@ -2,7 +2,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "f0137e29-7af0-444d-aa0a-4f196f839994", e._sentryDebugIdIdentifier = "sentry-dbid-f0137e29-7af0-444d-aa0a-4f196f839994");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "5dc943b0-1ccf-4f99-923f-7c3c83fe3383", e._sentryDebugIdIdentifier = "sentry-dbid-5dc943b0-1ccf-4f99-923f-7c3c83fe3383");
 	} catch {}
 })();
 var e = Object.create, t = Object.defineProperty, n = Object.getOwnPropertyDescriptor, r = Object.getOwnPropertyNames, i = Object.getPrototypeOf, a = Object.prototype.hasOwnProperty, o = (e, t, n) => () => {
@@ -7376,7 +7376,8 @@ var Ue = "peach.settings.v1", We = {
 		doubleTapPercentHelp: "Share of the screen on each side. Double-tap left to go back or right to skip ahead.",
 		holdRate: "Hold speed",
 		holdRateHelp: "Used when you hold the video or the right arrow key.",
-		swipeMinutes: "A full-width drag skips",
+		swipeSeconds: "Horizontal swipe step",
+		swipeSecondsHelp: "Defaults to 15 seconds per step. Longer swipes skip more steps; the video length limits the range.",
 		touch: "Picture gestures (hold, drag, double-tap)"
 	},
 	playbackTranscode: {
@@ -15750,7 +15751,8 @@ var Ue = "peach.settings.v1", We = {
 		doubleTapPercentHelp: "左右两侧各占画面的比例。双击左侧后退，右侧前进。",
 		holdRate: "长按倍速",
 		holdRateHelp: "长按画面或右方向键时使用。",
-		swipeMinutes: "横向拖过整个画面跳转",
+		swipeSeconds: "横滑跳转步长",
+		swipeSecondsHelp: "默认每档 15 秒；滑得越远，跳过的档数越多，视频时长决定最多能跳多远。",
 		touch: "画面手势（长按、拖动、双击）"
 	},
 	playbackTranscode: {
@@ -45232,7 +45234,7 @@ function n6(e) {
 var r6 = {
 	touchGestures: !0,
 	holdRate: 2,
-	swipeMinutes: 20,
+	swipeSeconds: 15,
 	doubleTapPercent: 35,
 	seekSeconds: 10,
 	autoFullscreen: !1
@@ -45241,7 +45243,7 @@ function a6(e = {}) {
 	return {
 		touchGestures: e.touchGestures !== !1,
 		holdRate: i6(e.holdRate, 1.25, 4, r6.holdRate),
-		swipeMinutes: i6(e.swipeMinutes, 1, 120, r6.swipeMinutes),
+		swipeSeconds: i6(e.swipeSeconds, 1, 60, r6.swipeSeconds),
 		doubleTapPercent: i6(e.doubleTapPercent, 15, 45, r6.doubleTapPercent),
 		seekSeconds: i6(e.seekSeconds, 1, 300, r6.seekSeconds),
 		autoFullscreen: e.autoFullscreen === !0
@@ -45427,7 +45429,9 @@ function S6(e) {
 		...t
 	};
 	n.followInitialDays = v6.includes(+n.followInitialDays) ? +n.followInitialDays : 30, delete n.rotateMinutes;
-	let r = !1, i = +n.sortDefaultsVersion || 0;
+	let r = !1;
+	"swipeMinutes" in n && (delete n.swipeMinutes, r = !0);
+	let i = +n.sortDefaultsVersion || 0;
 	i < 2 && n.defaultSort === "new" && (n.defaultSort = "seed", r = !0);
 	let a = Q3[n.defaultSort];
 	i < 3 && a && (n.defaultSort = a[0], r = !0), n.sortDefaultsVersion = 3, n.batchSize = M3(+n.batchSize, 1, 200, 60), n.defaultSort = x6(n.defaultSort, Z3, "seed"), n.defaultSortDirection = x6(n.defaultSortDirection, [
@@ -45436,7 +45440,7 @@ function S6(e) {
 		"desc"
 	], ""), n.hoverDelaySeconds = M3(+n.hoverDelaySeconds, 0, 60, 5), n.hoverPreview = n.hoverPreview !== !1;
 	let o = a6(n);
-	n.touchGestures = o.touchGestures, n.holdRate = o.holdRate, n.swipeMinutes = o.swipeMinutes, n.doubleTapPercent = o.doubleTapPercent, n.autoFullscreen = o.autoFullscreen, n.seekSeconds = M3(+n.seekSeconds, 1, 300, 10), delete n.loginDays, delete n.metadataRefreshDays, n.ambientMode = n.ambientMode !== !1, n.theaterMode = n.theaterMode === !0, n.groupCollapse = n.groupCollapse !== !1, n.detailAutoplay = n.detailAutoplay !== !1, n.autoChineseSubtitles = n.autoChineseSubtitles === !0, n.afterPlayback = x6(n.afterPlayback, o6, "next"), n.resumeRestartPercent = M3(+n.resumeRestartPercent, 0, 20, 5), n.miniplayer = n.miniplayer !== !1, n.uiSounds = n.uiSounds !== !1, n.feedAutoScroll = n.feedAutoScroll !== !1, n.feedNewRows = n.feedNewRows !== !1, n.homeShortsLimit = n.homeShortsLimit === 0 ? 0 : M3(+n.homeShortsLimit, 6, 60, 18), n.homeTiers = n.homeTiers !== !1, n.homePreviewOnly = n.homePreviewOnly === !0, n.containHomeScroll = n.containHomeScroll === !0, n.completionPrompt = n.completionPrompt !== !1, n.searchRecommendations = n.searchRecommendations !== !1, n.ingestNotices = n.ingestNotices !== !1, n.ingestToasts = t.ingestToasts ?? n.ingestNotices, n.ingestToasts = n.ingestToasts !== !1, n.browserNotices = t.browserNotices === !0;
+	n.touchGestures = o.touchGestures, n.holdRate = o.holdRate, n.swipeSeconds = o.swipeSeconds, n.doubleTapPercent = o.doubleTapPercent, n.autoFullscreen = o.autoFullscreen, n.seekSeconds = M3(+n.seekSeconds, 1, 300, 10), delete n.loginDays, delete n.metadataRefreshDays, n.ambientMode = n.ambientMode !== !1, n.theaterMode = n.theaterMode === !0, n.groupCollapse = n.groupCollapse !== !1, n.detailAutoplay = n.detailAutoplay !== !1, n.autoChineseSubtitles = n.autoChineseSubtitles === !0, n.afterPlayback = x6(n.afterPlayback, o6, "next"), n.resumeRestartPercent = M3(+n.resumeRestartPercent, 0, 20, 5), n.miniplayer = n.miniplayer !== !1, n.uiSounds = n.uiSounds !== !1, n.feedAutoScroll = n.feedAutoScroll !== !1, n.feedNewRows = n.feedNewRows !== !1, n.homeShortsLimit = n.homeShortsLimit === 0 ? 0 : M3(+n.homeShortsLimit, 6, 60, 18), n.homeTiers = n.homeTiers !== !1, n.homePreviewOnly = n.homePreviewOnly === !0, n.containHomeScroll = n.containHomeScroll === !0, n.completionPrompt = n.completionPrompt !== !1, n.searchRecommendations = n.searchRecommendations !== !1, n.ingestNotices = n.ingestNotices !== !1, n.ingestToasts = t.ingestToasts ?? n.ingestNotices, n.ingestToasts = n.ingestToasts !== !1, n.browserNotices = t.browserNotices === !0;
 	let s = t.notificationLimits, c = { ...y6 };
 	for (let e of Object.keys(y6)) c[e] = M3(s?.[e] ?? NaN, 0, 10, y6[e]);
 	return n.notificationLimits = c, n.showFeedbackButton = n.showFeedbackButton !== !1, n.topToolbar = g6(n.topToolbar), n.feedHideGroupCompilations = n.feedHideGroupCompilations !== !1, n.feedHideSoloCompilations = n.feedHideSoloCompilations === !0, n.feedHideExcerpts = n.feedHideExcerpts !== !1, n.searchHistoryLimit = M3(+n.searchHistoryLimit, 0, 50, 10), n.relatedLimit = M3(+n.relatedLimit, 0, 60, 20), n.feedLimit = M3(+n.feedLimit, 1, 100, 12), Object.assign(n, A3(n)), n.theme = x6(n.theme, _6, "system"), n.localAppearance = n.localAppearance === !0, n.catalogView = n.catalogView === "list" ? "list" : "cards", n.followLayout = n.followLayout === "table" ? "table" : "default", n.photoLayout = n.photoLayout === "fixed" ? "fixed" : "masonry", n.followPageSize = M3(+n.followPageSize, 1, 200, 20), n.recentTags = Array.isArray(n.recentTags) ? n.recentTags.filter((e) => typeof e == "string" && e.trim() && e.length <= 512).slice(0, 12) : [], n.queueSort = Object.fromEntries(Object.entries({
@@ -60631,4 +60635,4 @@ Lt(), dF();
 var pF = document.getElementById("peach-page"), mF = pF ? fF[pF.dataset.page ?? ""] : void 0;
 pF && mF && (0, Kt.createRoot)(pF).render(/* @__PURE__ */ (0, K.jsx)(b3, { children: /* @__PURE__ */ (0, K.jsx)(mF, { data: { ...pF.dataset } }) }));
 
-//# debugId=f0137e29-7af0-444d-aa0a-4f196f839994
+//# debugId=5dc943b0-1ccf-4f99-923f-7c3c83fe3383

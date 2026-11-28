@@ -51,18 +51,18 @@ describe('播放器按实际输入区分触摸和鼠标', () => {
     pointer('pointerdown', 10, 10, 'touch', 2, button); pointer('pointerup', 10, 10, 'touch', 2, button);
     button.click(); expect(action).toHaveBeenCalledOnce(); abort.abort();
   });
-  it('横滑按距离跨越多个十五秒步长，整屏封顶，松手提交并限制在片内', () => {
+  it('横滑按距离跨越多个十五秒步长，松手提交并限制在片内', () => {
     const { video, pointer, feedback, abort } = fixture(true);
     pointer('pointerdown', 100); pointer('pointermove', 150);
     expect(video.currentTime).toBe(1200); expect(feedback().textContent).toContain('20:15');
     pointer('pointerup', 150); expect(video.currentTime).toBe(1215);
     pointer('pointerdown', 100); pointer('pointermove', 600);
-    expect(video.currentTime).toBe(1215); expect(feedback().textContent).toContain('21:15');
-    pointer('pointerup', 600); expect(video.currentTime).toBe(1275);
+    expect(video.currentTime).toBe(1215); expect(feedback().textContent).toContain('22:45');
+    pointer('pointerup', 600); expect(video.currentTime).toBe(1365);
     pointer('pointerdown', 100); pointer('pointermove', 20000); pointer('pointerup', 20000);
-    expect(video.currentTime).toBe(1425); expect(video.paused).toBe(true);
+    expect(video.currentTime).toBe(1665); expect(video.paused).toBe(true);
     pointer('pointerdown', 900); pointer('pointermove', -10000); pointer('pointerup', -10000);
-    expect(video.currentTime).toBe(1275);
+    expect(video.currentTime).toBe(1365);
     video.currentTime = 5;
     pointer('pointerdown', 900); pointer('pointermove', -10000); pointer('pointerup', -10000);
     expect(video.currentTime).toBe(0);
@@ -70,16 +70,23 @@ describe('播放器按实际输入区分触摸和鼠标', () => {
     pointer('pointerdown', 100); pointer('pointermove', 20000); pointer('pointerup', 20000);
     expect(video.currentTime).toBeCloseTo(7199.9); abort.abort();
   });
-  it('同样滑半屏，短片只跨一档，长片跨四档；极快松手也按最终位移定位', () => {
+  it('整屏至少两分半，长片按片长约 4%；极快松手也按最终位移定位', () => {
     const { video, pointer, abort } = fixture(true);
     Object.defineProperty(video, 'duration', { configurable: true, value: 600 });
     video.currentTime = 200;
     pointer('pointerdown', 100); pointer('pointermove', 600); pointer('pointerup', 600);
-    expect(video.currentTime).toBe(215);
+    expect(video.currentTime).toBe(275);
+    video.currentTime = 200;
+    pointer('pointerdown', 100); pointer('pointerup', 1100);
+    expect(video.currentTime).toBe(350);
     Object.defineProperty(video, 'duration', { configurable: true, value: 7200 });
     video.currentTime = 200;
     pointer('pointerdown', 100); pointer('pointerup', 600);
-    expect(video.currentTime).toBe(260); abort.abort();
+    expect(video.currentTime).toBe(350);
+    Object.defineProperty(video, 'duration', { configurable: true, value: 14400 });
+    video.currentTime = 200;
+    pointer('pointerdown', 100); pointer('pointerup', 1100);
+    expect(video.currentTime).toBe(785); abort.abort();
   });
   it('横滑方向收回起点时不定位', () => {
     const { video, pointer, abort } = fixture(true);
@@ -162,14 +169,14 @@ describe('播放器按实际输入区分触摸和鼠标', () => {
     pointer('pointerdown', 100, 300, 'mouse'); pointer('pointermove', 600, 300, 'mouse');
     expect(video.currentTime).toBe(1200);
     pointer('pointerup', 600, 300, 'mouse'); click();
-    expect(video.currentTime).toBe(1260); expect(play).not.toHaveBeenCalled();
+    expect(video.currentTime).toBe(1350); expect(play).not.toHaveBeenCalled();
     pointer('pointerdown', 500, 100, 'mouse'); pointer('pointermove', 500, 500, 'mouse'); pointer('pointerup', 500, 500, 'mouse');
-    expect(video.currentTime).toBe(1260);
+    expect(video.currentTime).toBe(1350);
     root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse', button: 2, clientX: 600, clientY: 300 }));
     vi.advanceTimersByTime(600); expect(video.playbackRate).toBe(1);
     const button = root.querySelector('button')!;
     pointer('pointerdown', 10, 10, 'mouse', 1, button); pointer('pointermove', 600, 10, 'mouse', 1, button); pointer('pointerup', 600, 10, 'mouse', 1, button);
-    expect(video.currentTime).toBe(1260); abort.abort();
+    expect(video.currentTime).toBe(1350); abort.abort();
   });
   it('关掉触摸手势后鼠标在画面上也不起手势', () => {
     configureGestureSettings(() => ({ touchGestures: false }));
@@ -195,10 +202,10 @@ describe('手势数值按设置', () => {
     expect(video.playbackRate).toBe(3); pointer('pointerup', 500);
     expect(video.playbackRate).toBe(1);
     pointer('pointerdown', 100); pointer('pointermove', 600); pointer('pointerup', 600);
-    expect(video.currentTime).toBe(1250);
-    tap(250); tap(250); expect(video.currentTime).toBe(1250);
-    tap(150); tap(150); expect(video.currentTime).toBe(1220);
-    tap(900); tap(900); expect(video.currentTime).toBe(1250);
+    expect(video.currentTime).toBe(1350);
+    tap(250); tap(250); expect(video.currentTime).toBe(1350);
+    tap(150); tap(150); expect(video.currentTime).toBe(1320);
+    tap(900); tap(900); expect(video.currentTime).toBe(1350);
     abort.abort();
   });
   it('双击中间切换播放', () => {
@@ -230,7 +237,7 @@ describe('指针捕获失败', () => {
     expect(video.playbackRate).toBe(2); pointer('pointerup', 500);
     expect(video.playbackRate).toBe(1);
     pointer('pointerdown', 100); pointer('pointermove', 600); pointer('pointerup', 600);
-    expect(video.currentTime).toBe(1260);
+    expect(video.currentTime).toBe(1350);
     abort.abort();
   });
 });

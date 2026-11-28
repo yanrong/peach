@@ -60,7 +60,7 @@ export function wirePlayerInteractions(root: HTMLElement, video: HTMLVideoElemen
     try { video.currentTime = target } catch { tell(t('catalog:playerGestures.seekFailed')); return }
     tell(t('catalog:playerGestures.seekTo', { time: clock(target) }));
   };
-  /** 一屏横滑约取片长的 10%，至少两档、最多两分半；短滑用缓增曲线保留精度。 */
+  /** 整屏横滑约取片长的 4%，至少两分半；按屏宽线性映射，再量化为设置中的步长。 */
   const previewSeek = (current: NonNullable<typeof gesture>, dx: number) => {
     if (Math.abs(dx) < 12) { current.to = undefined; feedback.hidden = true; return }
     const total = duration();
@@ -68,10 +68,9 @@ export function wirePlayerInteractions(root: HTMLElement, video: HTMLVideoElemen
       current.to = undefined; tell(t('catalog:playerGestures.durationUnknown'), true); return;
     }
     const step = gestureSettings().swipeSeconds;
-    const span = Math.min(total, Math.max(step * 2, Math.min(total * .1, 150)));
+    const span = Math.min(total, Math.max(150, total * .04));
     const distance = Math.min(Math.abs(dx) / current.width, 1);
-    const steps = Math.min(Math.max(1, Math.floor(span / step)),
-      Math.max(1, Math.round(span * distance ** 1.5 / step)));
+    const steps = Math.max(1, Math.ceil(span * distance / step));
     current.to = clamp(current.from + Math.sign(dx) * steps * step) ?? undefined;
     if (current.to === undefined) { tell(t('catalog:playerGestures.durationUnknown'), true); return }
     const delta = current.to - current.from;
